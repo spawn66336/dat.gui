@@ -2024,15 +2024,18 @@ Common.extend(GUI.prototype,
     var root = this.getRoot();
     if (root.scrollable) {
       var top = dom.getOffset(root.__ul).top;
+      var marginBottom = 100;
+      var maxHeight = window.innerHeight - top - marginBottom - CLOSE_BUTTON_HEIGHT;
       var h = 0;
       Common.each(root.__ul.childNodes, function (node) {
         if (!(root.autoPlace && node === root.__save_row)) {
           h += dom.getHeight(node);
         }
       });
-      if (window.innerHeight - top - CLOSE_BUTTON_HEIGHT < h) {
+      if (maxHeight < h) {
         dom.addClass(root.domElement, GUI.CLASS_TOO_TALL);
-        root.__ul.style.height = window.innerHeight - top - CLOSE_BUTTON_HEIGHT + 'px';
+        root.__ul.style.height = maxHeight + 'px';
+        root.domElement.style.height = maxHeight + 'px';
       } else {
         dom.removeClass(root.domElement, GUI.CLASS_TOO_TALL);
         root.__ul.style.height = 'auto';
